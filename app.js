@@ -1,7 +1,7 @@
 const express = require('express');
-const http = require('http');
+
 const app = express();
-const server = http.createServer(app);
+
 const mongoose = require('mongoose');
 const db = require('./db/db');
 const cors = require('cors');
@@ -82,7 +82,7 @@ mongoose.connect(db.url, {
     dbName: 'phone_shop'
 }).then(res => {
     console.log('Connect Sucessfullly');
-    server.listen(db.port);
+    app.listen(process.env.PORT);
 }).catch(err => {
     console.log('Something is wrong: ' + err)
 })
