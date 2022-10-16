@@ -13,6 +13,4 @@ routerProduct.post('/add-product', validateProduct.validatePro.validateProduct, 
 routerProduct.post('/edit-product', validateProduct.validatePro.validateProduct, controllerProduct.editProduct);
 routerProduct.post('/delete-product', controllerProduct.deleteProduct);
 
-
-
 exports.routerProduct = routerProduct;

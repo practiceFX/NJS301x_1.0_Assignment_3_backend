@@ -7,9 +7,14 @@ const db = require('./db/db');
 const cors = require('cors');
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
-const csrf = require('csurf');
+
 const multer = require('multer');
-const crfsProtection = csrf();
+
+const server = app.listen(process.env.PORT || 8000);
+const io = require('./socket').init(server);
+
+// const csrf = require('csurf');
+// const crfsProtection = csrf();
 
 
 
@@ -44,6 +49,7 @@ const fileFilter = (req, file, cb) => {
 const routerUser = require('./router/userRouter');
 const routerProduct = require('./router/productRouter');
 const routerCart = require('./router/cartRouter');
+const routerChat = require('./router/chatRouter');
 
 
 app.use(express.urlencoded({ extended: true }));
@@ -70,6 +76,7 @@ app.use(
 app.use(routerUser.routerUser);
 app.use(routerProduct.routerProduct);
 app.use(routerCart.routerCart);
+app.use(routerChat.routerChat);
 
 
 
@@ -81,8 +88,10 @@ app.use((error, req, res, next) => {
 mongoose.connect(db.url, {
     dbName: 'phone_shop'
 }).then(res => {
-    console.log('Connect Sucessfullly');
-    app.listen(process.env.PORT);
+
+    io.on('connetion', socket => {
+        console.log('Connect Sucessfullly');
+    })
 }).catch(err => {
     console.log('Something is wrong: ' + err)
 })
